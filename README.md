@@ -1,4 +1,5 @@
 tsc filename
 
-tsc -w
+tsc -w => watch every change
+
 tsc --init => for tsconfig
