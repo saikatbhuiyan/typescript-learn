@@ -59,3 +59,72 @@ function watchmovie() {
 }
 
 watchmovie();
+
+console.log("-----Constructor----Constructor");
+
+/*// Constructor Functions
+class User {
+  constructor(name, email) {
+    this.name = name;
+    this.email = email;
+    this.points = 0;
+  }
+
+  login() {
+    console.log(this.name, "He logged in");
+  }
+
+  logout() {
+    console.log(this.name, "Has logged out");
+  }
+
+  addPoints() {
+    this.points++;
+    console.log("total points", this.points);
+  }
+}
+
+const user = new User("John", "john@email.com");
+const user2 = new User("Mark", "mark@email.com");
+
+console.log(user);
+user2.addPoints();
+*/
+
+// Javascript’s Own Constructor Function
+function User(name, email) {
+  this.name = name;
+  this.email = email;
+  this.points = 0;
+
+  this.login = () => {
+    console.log(this.name, "He logged in");
+  };
+
+  this.logout = () => {
+    console.log(this.name, "Has logged out");
+  };
+
+  this.addPoint = () => {
+    this.points++;
+    console.log("total points", this.points);
+  };
+}
+
+const user = new User("John", "john@gmail.com");
+
+/*
+So I'll expand the user object. You'll see that three methods are added to the
+user object itself and not to the prototype of the user object.
+If you remember when we created an instance of user using our class, all these
+three methods that is add point login and log out were a part of the prototype
+object and now only the constructor is a part of the prototype object.
+
+But all these three methods now exist inside the user object and not inside
+the prototype of the user object. And to understand this behavior and add our
+methods to prototype of the user object, we will need to understand what prototypes
+are and why classes add these methods to prototypes of the objects.
+We are going to understand this by first understanding what is a prototype.
+*/
+
+console.log(user);
