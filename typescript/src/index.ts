@@ -106,6 +106,7 @@ enum Manufacturers {
 
 interface AircraftInterface {
   _aircraftModel: string;
+  pilotName?: () => void;
   prototype?: any;
   origin?: string;
   manufacturer?: string;
@@ -166,7 +167,7 @@ const airplane: AircraftInterface = new Airplane2("Airbus A380", "John");
 
 const helicopter: AircraftInterface = new Helicopter("H380", "Mark");
 
-console.log(airplane);
+/* console.log(airplane);
 console.log(helicopter);
 
 // prototypical inheritance
@@ -175,3 +176,89 @@ console.log(airplane.manufacturer);
 airplane.airbusMethod
   ? airplane.airbusMethod()
   : console.log("Method Does not Exist");
+ */
+
+function MethodDecorator(
+  classPrototype: Object,
+  methodName: string,
+  descriptor: PropertyDescriptor
+) {
+  console.log(classPrototype);
+  console.log(methodName);
+  console.log(descriptor);
+  descriptor.writable = true;
+}
+
+function StaticMethodDecorator(
+  constructor: Object,
+  methodName: string,
+  descriptor: PropertyDescriptor
+) {
+  console.log(constructor);
+  console.log(methodName);
+  console.log(descriptor);
+  descriptor.writable = true;
+}
+
+function ParameterMethodDecorator(
+  classPrototype: Object,
+  methodName: string,
+  index: number
+) {
+  console.log(classPrototype);
+  console.log(methodName);
+  console.log(index);
+}
+
+class Airplane3 implements AircraftInterface {
+  constructor(public _aircraftModel: string, private pilot: string) {}
+
+  @StaticMethodDecorator
+  public static seatCount() {
+    console.log("150 seats");
+  }
+
+  @ParameterMethodDecorator
+  public hostName(name: string) {
+    console.log(this.pilot);
+  }
+
+  @MethodDecorator
+  public pilotName() {
+    console.log(this.pilot);
+  }
+
+  public get aircraftModel() {
+    return this._aircraftModel;
+  }
+}
+const airplane3: AircraftInterface = new Airplane3("Airbus A380", "John");
+
+airplane3.pilotName = () => console.log("Function Changed");
+
+airplane3.pilotName();
+
+class Airplane4 {
+  constructor(public _aircraftModel: string, private pilot: string) {}
+
+  @StaticMethodDecorator
+  public static seatCount() {
+    console.log("150 seats");
+  }
+
+  public hostName(
+    @ParameterMethodDecorator name: string,
+    @ParameterMethodDecorator lastName: string
+  ) {
+    console.log(name);
+  }
+
+  @MethodDecorator
+  public pilotName() {
+    console.log(this.pilot);
+  }
+
+  public get aircraftModel() {
+    return this._aircraftModel;
+  }
+}
