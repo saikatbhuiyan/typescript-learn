@@ -8,32 +8,37 @@
  * information about the decorated declaration.
  * */
 
+// function FirstDecorator(constructor: Function) {
+//     console.log("Decorator Invoked");
+//     console.log(constructor);
 
-function FirstDecorator(constructor: Function) {
-    console.log("Decorator Invoked");
+// }
+
+// Decorator Factories
+function FirstDecorator(name: string) {
+  return function (constructor: Function) {
+    console.log(`${name} Invoked`);
     console.log(constructor);
-    
+  };
 }
 
-@FirstDecorator
+// @FirstDecorator
+@FirstDecorator("First Decorator")
 class Aircraft {
-    constructor(
-        public _aircraftModel: string,
-        private pilot: string
-    ) {
-        console.log("Aircraft Class Instantiated");
-    }
+  constructor(public _aircraftModel: string, private pilot: string) {
+    console.log("Aircraft Class Instantiated");
+  }
 
-    public pilotName() {
-        console.log(this.pilot);
-    }
+  public pilotName() {
+    console.log(this.pilot);
+  }
 
-    public get aircraftModel() {
-        return this._aircraftModel;
-    }
+  public get aircraftModel() {
+    return this._aircraftModel;
+  }
 }
 
-const aircraft = new Aircraft("Airbus A380", 'saikat')
+const aircraft = new Aircraft("Airbus A380", "saikat");
 
 /* 
 Decorator Invoked
@@ -46,7 +51,6 @@ index.ts:27 class Aircraft {
     pilotName() …
 index.ts:34 Aircraft Class Instantiated 
 */
-
 
 /* Since we have enabled experimental decorators in our config file, we can now write our first decorator.
 Decorators are nothing but functions.
@@ -80,8 +84,6 @@ Actually, the constructor function, because now we know that classes are just sy
 functions.
  */
 
-
-
 /* 
 You'll notice that the decorator function was invoked before the class was instantiated.
 And this happened at the time when the class is defined by TypeScript at runtime.
@@ -94,3 +96,64 @@ once and the decorators are invoked at the time.
 
 The class is defined at the runtime and not when the class is instantiated. 
 */
+
+/* ------------------ */
+
+enum Manufacturers {
+  boeing = "boeing",
+  airbus = "airbus",
+}
+
+interface AircraftInterface {
+  _aircraftModel: string;
+  prototype?: any;
+  origin?: string;
+  manufacturer?: string;
+  type?: string;
+  airbusMethod?: () => void;
+  boeingMethod?: () => void;
+}
+
+function AircraftManufacturer(manufacturer: Manufacturers) {
+  return (target: Function) => {
+    if (manufacturer === Manufacturers.airbus) {
+      target.prototype.origin = "United States Of America";
+      target.prototype.manufacturer = Manufacturers.airbus;
+      target.prototype.type = "Jet";
+      target.prototype.airbusMethod = () => {
+        console.log("Function performed by airbus");
+      };
+    } else {
+      target.prototype.origin = "France";
+      target.prototype.manufacturer = Manufacturers.boeing;
+      target.prototype.type = "Helicopter";
+      target.prototype.boeingMethod = () => {
+        console.log("Function performed by boeing");
+      };
+    }
+  };
+}
+
+@AircraftManufacturer(Manufacturers.airbus)
+class Airplane2 implements AircraftInterface {
+  constructor(public _aircraftModel: string, private pilot: string) {
+    console.log("Aircraft Class Instantiated");
+  }
+
+  public pilotName() {
+    console.log(this.pilot);
+  }
+
+  public get aircraftModel() {
+    return this._aircraftModel;
+  }
+}
+
+const airplane: AircraftInterface = new Airplane2("Airbus A380", "John");
+
+// prototypical inheritance
+console.log(airplane.manufacturer);
+
+airplane.airbusMethod
+  ? airplane.airbusMethod()
+  : console.log("Method Does not Exist");

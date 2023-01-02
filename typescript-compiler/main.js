@@ -147,6 +147,12 @@ When it comes to inheritance and programming, there are two schools of thought.
 One is the classic inheritance using classes and classes, and the other one is prototypical inheritance.
 
 JavaScript uses the concept of prototypical inheritance. 
+
+Simply put, prototypical inheritance refers to the ability to access object properties from another object. 
+We use a JavaScript prototype to add new properties and methods to an existing object constructor. 
+We can then essentially tell our JS code to inherit properties from a prototype. 
+Prototypical inheritance allows us to reuse the properties or methods from one JavaScript object 
+to another through a reference pointer function.
 */
 
 /* If we look at the user object, we know that the add point login and the logic method should be a part
