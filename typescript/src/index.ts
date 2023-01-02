@@ -149,7 +149,25 @@ class Airplane2 implements AircraftInterface {
   }
 }
 
+@AircraftManufacturer(Manufacturers.boeing)
+class Helicopter implements AircraftInterface {
+  constructor(public _aircraftModel: string, private pilot: string) {}
+
+  public pilotName() {
+    console.log(this.pilot);
+  }
+
+  public get aircraftModel() {
+    return this._aircraftModel;
+  }
+}
+
 const airplane: AircraftInterface = new Airplane2("Airbus A380", "John");
+
+const helicopter: AircraftInterface = new Helicopter("H380", "Mark");
+
+console.log(airplane);
+console.log(helicopter);
 
 // prototypical inheritance
 console.log(airplane.manufacturer);
